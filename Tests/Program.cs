@@ -1,9 +1,5 @@
 ﻿using BalanceBoardAdapter;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
 
 namespace Tests {
@@ -38,9 +34,6 @@ namespace Tests {
         }
 
         static void infoUpdateTimer_Elapsed(object sender, ElapsedEventArgs e) {
-            // Pass event onto the form GUI thread.
-
-            //this.BeginInvoke(new Action(() => InfoUpdate()));
             InfoUpdate();
         }
 
@@ -52,11 +45,11 @@ namespace Tests {
             //var rwBottomLeft = wiiDevice.WiimoteState.BalanceBoardState.SensorValuesKg.BottomLeft;
             //var rwBottomRight = wiiDevice.WiimoteState.BalanceBoardState.SensorValuesKg.BottomRight;
 
-            var center = board.GetCenterOfGravity();
+            var center = board.CenterOfGravity;
 
             //Console.WriteLine($"Weight: {rwWeight};");
             //Console.WriteLine($"TopLeft: {rwTopLeft}; TopRight: {rwTopRight}; BottomLeft: {rwBottomLeft}; BottomRight: {rwBottomRight};");
-            Console.WriteLine($"Center of Gravity: X:{center.Item1}; Y:{center.Item2};");
+            Console.WriteLine($"Center of Gravity: X:{center.x}; Y:{center.y};");
         }
     }
 }

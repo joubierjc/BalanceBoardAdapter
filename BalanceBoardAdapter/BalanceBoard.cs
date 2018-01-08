@@ -1,16 +1,105 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using WiimoteLib;
 
 namespace BalanceBoardAdapter {
+    public struct VectorF {
+        public float x;
+        public float y;
+    }
+
+    public struct SensorsF {
+        public float TopLeft;
+        public float BottomLeft;
+        public float TopRight;
+        public float BottomRight;
+    }
+
+    public struct Sensors {
+        public short TopLeft;
+        public short BottomLeft;
+        public short TopRight;
+        public short BottomRight;
+    }
+
     public class BalanceBoard {
         private Wiimote wiiDevice;
 
-        // Constructor
+        /// <summary>
+        /// Renvoie les valeurs des senseurs en Kg.
+        /// </summary>
+        public SensorsF SensorValuesKg {
+            get {
+                return new SensorsF() {
+                    TopLeft = wiiDevice.WiimoteState.BalanceBoardState.SensorValuesKg.TopLeft,
+                    BottomLeft = wiiDevice.WiimoteState.BalanceBoardState.SensorValuesKg.BottomLeft,
+                    TopRight = wiiDevice.WiimoteState.BalanceBoardState.SensorValuesKg.TopRight,
+                    BottomRight = wiiDevice.WiimoteState.BalanceBoardState.SensorValuesKg.BottomRight
+                };
+            }
+        }
+
+        /// <summary>
+        /// Renvoie la masse en Kg.
+        /// </summary>
+        public float WeightKg {
+            get {
+                return wiiDevice.WiimoteState.BalanceBoardState.WeightKg;
+            }
+        }
+
+        /// <summary>
+        /// Renvoie les valeurs des senseurs en Lb.
+        /// </summary>
+        public SensorsF SensorValuesLb {
+            get {
+                return new SensorsF() {
+                    TopLeft = wiiDevice.WiimoteState.BalanceBoardState.SensorValuesLb.TopLeft,
+                    BottomLeft = wiiDevice.WiimoteState.BalanceBoardState.SensorValuesLb.BottomLeft,
+                    TopRight = wiiDevice.WiimoteState.BalanceBoardState.SensorValuesLb.TopRight,
+                    BottomRight = wiiDevice.WiimoteState.BalanceBoardState.SensorValuesLb.BottomRight
+                };
+            }
+        }
+
+        /// <summary>
+        /// Renvoie la masse en Lb.
+        /// </summary>
+        public float WeightLb {
+            get {
+                return wiiDevice.WiimoteState.BalanceBoardState.WeightLb;
+            }
+        }
+
+        /// <summary>
+        /// Renvoie les valeurs des senseurs, sans modification.
+        /// </summary>
+        public Sensors SensorValuesRaw {
+            get {
+                return new Sensors() {
+                    TopLeft = wiiDevice.WiimoteState.BalanceBoardState.SensorValuesRaw.TopLeft,
+                    BottomLeft = wiiDevice.WiimoteState.BalanceBoardState.SensorValuesRaw.BottomLeft,
+                    TopRight = wiiDevice.WiimoteState.BalanceBoardState.SensorValuesRaw.TopRight,
+                    BottomRight = wiiDevice.WiimoteState.BalanceBoardState.SensorValuesRaw.BottomRight
+                };
+            }
+        }
+
+        /// <summary>
+        /// Renvoie le Centre de gravité.
+        /// </summary>
+        public VectorF CenterOfGravity {
+            get {
+                return new VectorF() {
+                    x = wiiDevice.WiimoteState.BalanceBoardState.CenterOfGravity.X,
+                    y = wiiDevice.WiimoteState.BalanceBoardState.CenterOfGravity.Y
+                };
+            }
+        }
+
+        /// <summary>
+        /// Construit une balance board à partir d'un appareil Wii.
+        /// </summary>
+        /// <param name="wiiDevice"></param>
         private BalanceBoard(Wiimote wiiDevice) {
             this.wiiDevice = wiiDevice;
         }
@@ -84,26 +173,6 @@ namespace BalanceBoardAdapter {
         /// <param name="enabled"></param>
         public void SetLED(bool enabled) {
             wiiDevice.SetLEDs(enabled, false, false, false);
-        }
-
-        /// <summary>
-        /// Renvoie le Centre de gravité
-        /// </summary>
-        /// <returns></returns>
-        public Tuple<float, float> GetCenterOfGravity() {
-            return new Tuple<float, float>(
-                wiiDevice.WiimoteState.BalanceBoardState.CenterOfGravity.X,
-                wiiDevice.WiimoteState.BalanceBoardState.CenterOfGravity.Y
-            );
-        }
-
-        /// <summary>
-        /// Renvoie le Centre de gravité
-        /// </summary>
-        /// <returns></returns>
-        public void GetCenterOfGravity(out float x, out float y) {
-            x = wiiDevice.WiimoteState.BalanceBoardState.CenterOfGravity.X;
-            y = wiiDevice.WiimoteState.BalanceBoardState.CenterOfGravity.Y;
         }
     }
 }
